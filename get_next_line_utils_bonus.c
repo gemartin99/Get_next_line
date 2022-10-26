@@ -25,21 +25,15 @@ char	*ft_strjoin(char *s1, char *s2)
 			return (0);
 		s1[0] = 0;
 	}
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	str = (char *)malloc(sizeof(char) * ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!str)
-	{
-		free(s1);
-		return (0);
-	}
+		return (ft_free(&s1));
 	i = -1;
 	while (s1[++i])
 		str[i] = s1[i];
-	c = 0;
-	while (s2[c])
-	{
+	c = -1;
+	while (s2[++c])
 		str[i + c] = s2[c];
-		c++;
-	}
 	str[i + c] = '\0';
 	free(s1);
 	return (str);

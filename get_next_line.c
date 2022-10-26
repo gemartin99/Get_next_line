@@ -12,6 +12,13 @@
 
 #include "get_next_line.h"
 
+char	*ft_free(char **str)
+{
+	free(*str);
+	*str = NULL;
+	return (NULL);
+}
+
 char	*clean_storage(char *storage)
 {
 	char	*new_storage;
@@ -21,22 +28,17 @@ char	*clean_storage(char *storage)
 	ptr = ft_strchr(storage, '\n');
 	if (!ptr)
 	{
-		free(storage);
 		new_storage = NULL;
-		return (NULL);
+		return (ft_free(&storage));
 	}
 	else
 		len = (ptr - storage) + 1;
 	if (!storage[len])
-	{
-		free(storage);
-		return (NULL);
-	}
+		return (ft_free(&storage));
 	new_storage = ft_substr(storage, len, ft_strlen(storage) - len);
-	//free(storage);
+	ft_free(&storage);
 	if (!new_storage)
-		return(NULL);
-	free(storage);
+		return (NULL);
 	return (new_storage);
 }
 
@@ -62,16 +64,11 @@ char	*readbuf(int fd, char *storage)
 	rid = 1;
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
-		return (0);
+		return (ft_free(&storage));
 	buffer[0] = '\0';
 	while (rid > 0 && !ft_strchr(buffer, '\n'))
 	{
 		rid = read (fd, buffer, BUFFER_SIZE);
-		if (rid == -1)
-		{
-			free(buffer);
-			return (NULL);
-		}
 		if (rid > 0)
 		{
 			buffer[rid] = '\0';
@@ -79,12 +76,14 @@ char	*readbuf(int fd, char *storage)
 		}
 	}
 	free(buffer);
+	if (rid == -1)
+		return (ft_free(&storage));
 	return (storage);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*storage;
+	static char	*storage = {0};
 	char		*line;
 
 	if (fd < 0)
@@ -95,10 +94,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = new_line(storage);
 	if (!line)
-	{
-		free(storage);
-		return (NULL);
-	}
+		return (ft_free(&storage));
 	storage = clean_storage(storage);
 	return (line);
 }

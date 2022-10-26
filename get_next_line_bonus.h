@@ -25,4 +25,5 @@ char	*ft_strdup(char *s1);
 char	*ft_strchr(char *s, int c);
 char	*ft_substr(char *s, unsigned int start, size_t len);
 char	*get_next_line(int fd);
+char	*ft_free(char **str);
 #endif
