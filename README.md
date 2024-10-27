@@ -10,7 +10,7 @@ Este proyecto trata sobre la creación de una función que permite leer una lín
 char	*get_next_line(int fd)
 ```
 
-# Author ✍🏼
+# Autor ✍🏼
 
 <table>
   <tr>
